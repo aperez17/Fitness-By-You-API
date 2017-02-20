@@ -3,3 +3,7 @@ Sending msg to client play-fork-run-da23f9b0-57a4-4810-8caa-9c01499813ff: Detach
 Sending msg to client play-fork-run-da23f9b0-57a4-4810-8caa-9c01499813ff: DetachedLogEvent(LogMessage(debug,sbt general server logs are in: C:\cygwin64\home\alexx\Fitness-By-You-API\.sbtserver\master.log))
 Sending msg to client play-fork-run-da23f9b0-57a4-4810-8caa-9c01499813ff: DetachedLogEvent(LogMessage(debug,sbt client logs are in: C:\cygwin64\home\alexx\Fitness-By-You-API\.sbtserver\connections\play-fork-run-da23f9b0-57a4-4810-8caa-9c01499813ff.log))
 Reading next message from client.
+Client play-fork-run-da23f9b0-57a4-4810-8caa-9c01499813ff closed, java.net.SocketException: Software caused connection abort: recv failed, shutting down
+Stopping client.
+Dropping message (0,ReceivedResponse()) to dead client play-fork-run-da23f9b0-57a4-4810-8caa-9c01499813ff
+Client play-fork-run-da23f9b0-57a4-4810-8caa-9c01499813ff thread exiting.

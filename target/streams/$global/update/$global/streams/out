@@ -7,7 +7,7 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies for fitness-by-you-api#fitness-by-you-api_2.11;0.1.0 [compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies fitness-by-you-api#fitness-by-you-api_2.11;0.1.0->org.scala-lang#scala-library;2.11.8 [compile->default(compile)][0m
 [0m[[0minfo[0m] [0mResolving org.scala-lang#scala-library;2.11.8 ...[0m
-[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@65f940e4[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@695138ca[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-lang#scala-library;2.11.8[0m
 [0m[[0mdebug[0m] [0m	found org.scala-lang#scala-library;2.11.8 in sbt-chain[0m
 [0m[[0mdebug[0m] [0m	[2.11.8] org.scala-lang#scala-library;2.11.8[0m
@@ -7625,7 +7625,7 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.typesafe.akka#akka-actor_2.11;2.3.8!akka-actor_2.11.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.typesafe.akka#akka-testkit_2.11;2.3.8!akka-testkit_2.11.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.typesafe#config;1.2.1!config.jar(bundle)[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 3485ms :: artifacts dl 140ms[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 3128ms :: artifacts dl 121ms[0m
 [0m[[0mdebug[0m] [0m	report for fitness-by-you-api#fitness-by-you-api_2.11;0.1.0 compile produced in C:\cygwin64\home\alexx\Fitness-By-You-API\target\resolution-cache\reports\fitness-by-you-api-fitness-by-you-api_2.11-compile.xml[0m
 [0m[[0mdebug[0m] [0m	report for fitness-by-you-api#fitness-by-you-api_2.11;0.1.0 runtime produced in C:\cygwin64\home\alexx\Fitness-By-You-API\target\resolution-cache\reports\fitness-by-you-api-fitness-by-you-api_2.11-runtime.xml[0m
 [0m[[0mdebug[0m] [0m	report for fitness-by-you-api#fitness-by-you-api_2.11;0.1.0 test produced in C:\cygwin64\home\alexx\Fitness-By-You-API\target\resolution-cache\reports\fitness-by-you-api-fitness-by-you-api_2.11-test.xml[0m
@@ -7640,5 +7640,5 @@
 [0m[[0mdebug[0m] [0m	report for fitness-by-you-api#fitness-by-you-api_2.11;0.1.0 pom produced in C:\cygwin64\home\alexx\Fitness-By-You-API\target\resolution-cache\reports\fitness-by-you-api-fitness-by-you-api_2.11-pom.xml[0m
 [0m[[0mdebug[0m] [0m	report for fitness-by-you-api#fitness-by-you-api_2.11;0.1.0 scala-tool produced in C:\cygwin64\home\alexx\Fitness-By-You-API\target\resolution-cache\reports\fitness-by-you-api-fitness-by-you-api_2.11-scala-tool.xml[0m
 [0m[[0mdebug[0m] [0m	report for fitness-by-you-api#fitness-by-you-api_2.11;0.1.0 fork-run produced in C:\cygwin64\home\alexx\Fitness-By-You-API\target\resolution-cache\reports\fitness-by-you-api-fitness-by-you-api_2.11-fork-run.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (3485ms resolve - 140ms download)[0m
+[0m[[0mdebug[0m] [0m	resolve done (3128ms resolve - 121ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m

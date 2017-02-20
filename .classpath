@@ -407,6 +407,41 @@
       <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\org.scalactic\scalactic_2.11\docs\scalactic_2.11-2.2.5-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
+  <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\be.objectify\deadbolt-scala_2.11\srcs\deadbolt-scala_2.11-2.5.0-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\be.objectify\deadbolt-scala_2.11\jars\deadbolt-scala_2.11-2.5.0.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\be.objectify\deadbolt-scala_2.11\docs\deadbolt-scala_2.11-2.5.0-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\com.typesafe.play\play-cache_2.11\srcs\play-cache_2.11-2.5.0-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\com.typesafe.play\play-cache_2.11\jars\play-cache_2.11-2.5.0.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\com.typesafe.play\play-cache_2.11\docs\play-cache_2.11-2.5.0-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\net.sf.ehcache\ehcache-core\srcs\ehcache-core-2.6.11-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\net.sf.ehcache\ehcache-core\jars\ehcache-core-2.6.11.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\net.sf.ehcache\ehcache-core\docs\ehcache-core-2.6.11-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\util_2.11\srcs\util_2.11-2.3.0-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\util_2.11\jars\util_2.11-2.3.0.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\util_2.11\docs\util_2.11-2.3.0-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\com.softwaremill.common\tagging_2.11\srcs\tagging_2.11-1.0.0-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\com.softwaremill.common\tagging_2.11\jars\tagging_2.11-1.0.0.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\com.softwaremill.common\tagging_2.11\docs\tagging_2.11-1.0.0-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\proxy_2.11\srcs\proxy_2.11-2.3.0-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\proxy_2.11\jars\proxy_2.11-2.3.0.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\proxy_2.11\docs\proxy_2.11-2.3.0-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\org.javassist\javassist\srcs\javassist-3.20.0-GA-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\org.javassist\javassist\bundles\javassist-3.20.0-GA.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\org.javassist\javassist\docs\javassist-3.20.0-GA-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
   <classpathentry sourcepath="C:\Users\alexx\.ivy2\cache\com.typesafe.play\play-test_2.11\srcs\play-test_2.11-2.5.12-sources.jar" kind="lib" path="C:\Users\alexx\.ivy2\cache\com.typesafe.play\play-test_2.11\jars\play-test_2.11-2.5.12.jar">
     <attributes>
       <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\com.typesafe.play\play-test_2.11\docs\play-test_2.11-2.5.12-javadoc.jar!/"/>
@@ -605,6 +640,8 @@
       <attribute name="javadoc_location" value="jar:file:C:\Users\alexx\.ivy2\cache\org.seleniumhq.selenium\selenium-leg-rc\docs\selenium-leg-rc-2.48.2-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
+  <classpathentry kind="lib" path="C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\macros_2.11\jars\macros_2.11-2.3.0.jar"/>
+  <classpathentry kind="lib" path="C:\Users\alexx\.ivy2\cache\com.softwaremill.macwire\macrosakka_2.11\jars\macrosakka_2.11-2.3.0.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="output" path="bin"/>
 </classpath>

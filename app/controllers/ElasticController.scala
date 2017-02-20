@@ -31,10 +31,4 @@ class ElasticController @Inject() (cs: ClusterSetup, elasticFactory: PlayElastic
         Future(InternalServerError("Error connecting to Elasticsearch. Is application.conf filled in properly?\n"))
     }
   }
-
-  def createIndex = Action.async {
-    client execute {
-      create index "workouts" replicas 0
-    } map { _ => Ok("Index created") }
-  }
 }

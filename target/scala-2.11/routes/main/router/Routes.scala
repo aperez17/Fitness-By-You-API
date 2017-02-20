@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
 // @SOURCE:C:/cygwin64/home/alexx/Fitness-By-You-API/conf/routes
-// @DATE:Sun Feb 12 11:45:28 EST 2017
+// @DATE:Sun Feb 19 22:45:57 EST 2017
 
 package router
 
@@ -17,7 +17,7 @@ class Routes(
   override val errorHandler: play.api.http.HttpErrorHandler, 
   // @LINE:5
   ElasticController_1: javax.inject.Provider[controllers.ElasticController],
-  // @LINE:8
+  // @LINE:7
   WorkoutController_0: javax.inject.Provider[controllers.WorkoutController],
   val prefix: String
 ) extends GeneratedRouter {
@@ -26,7 +26,7 @@ class Routes(
    def this(errorHandler: play.api.http.HttpErrorHandler,
     // @LINE:5
     ElasticController_1: javax.inject.Provider[controllers.ElasticController],
-    // @LINE:8
+    // @LINE:7
     WorkoutController_0: javax.inject.Provider[controllers.WorkoutController]
   ) = this(errorHandler, ElasticController_1, WorkoutController_0, "/")
 
@@ -43,7 +43,6 @@ class Routes(
 
   def documentation = List(
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """es/stats""", """@controllers.ElasticController@.getStats()"""),
-    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """es/index""", """@controllers.ElasticController@.createIndex()"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """api/workouts/hardcoded""", """@controllers.WorkoutController@.getHardcoded()"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """api/workouts/""" + "$" + """id<[^/]+>""", """@controllers.WorkoutController@.get(id:String)"""),
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """api/workouts/populate""", """@controllers.WorkoutController@.populate()"""),
@@ -73,28 +72,11 @@ class Routes(
     )
   )
 
-  // @LINE:6
-  private[this] lazy val controllers_ElasticController_createIndex1_route = Route("POST",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("es/index")))
-  )
-  private[this] lazy val controllers_ElasticController_createIndex1_invoker = createInvoker(
-    ElasticController_1.get.createIndex(),
-    HandlerDef(this.getClass.getClassLoader,
-      "router",
-      "controllers.ElasticController",
-      "createIndex",
-      Nil,
-      "POST",
-      """""",
-      this.prefix + """es/index"""
-    )
-  )
-
-  // @LINE:8
-  private[this] lazy val controllers_WorkoutController_getHardcoded2_route = Route("GET",
+  // @LINE:7
+  private[this] lazy val controllers_WorkoutController_getHardcoded1_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("api/workouts/hardcoded")))
   )
-  private[this] lazy val controllers_WorkoutController_getHardcoded2_invoker = createInvoker(
+  private[this] lazy val controllers_WorkoutController_getHardcoded1_invoker = createInvoker(
     WorkoutController_0.get.getHardcoded(),
     HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -107,11 +89,11 @@ class Routes(
     )
   )
 
-  // @LINE:9
-  private[this] lazy val controllers_WorkoutController_get3_route = Route("GET",
+  // @LINE:8
+  private[this] lazy val controllers_WorkoutController_get2_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("api/workouts/"), DynamicPart("id", """[^/]+""",true)))
   )
-  private[this] lazy val controllers_WorkoutController_get3_invoker = createInvoker(
+  private[this] lazy val controllers_WorkoutController_get2_invoker = createInvoker(
     WorkoutController_0.get.get(fakeValue[String]),
     HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -124,11 +106,11 @@ class Routes(
     )
   )
 
-  // @LINE:10
-  private[this] lazy val controllers_WorkoutController_populate4_route = Route("POST",
+  // @LINE:9
+  private[this] lazy val controllers_WorkoutController_populate3_route = Route("POST",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("api/workouts/populate")))
   )
-  private[this] lazy val controllers_WorkoutController_populate4_invoker = createInvoker(
+  private[this] lazy val controllers_WorkoutController_populate3_invoker = createInvoker(
     WorkoutController_0.get.populate(),
     HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -141,11 +123,11 @@ class Routes(
     )
   )
 
-  // @LINE:11
-  private[this] lazy val controllers_WorkoutController_search5_route = Route("GET",
+  // @LINE:10
+  private[this] lazy val controllers_WorkoutController_search4_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("api/workouts")))
   )
-  private[this] lazy val controllers_WorkoutController_search5_invoker = createInvoker(
+  private[this] lazy val controllers_WorkoutController_search4_invoker = createInvoker(
     WorkoutController_0.get.search(fakeValue[String]),
     HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -158,11 +140,11 @@ class Routes(
     )
   )
 
-  // @LINE:12
-  private[this] lazy val controllers_WorkoutController_createWorkout6_route = Route("POST",
+  // @LINE:11
+  private[this] lazy val controllers_WorkoutController_createWorkout5_route = Route("POST",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("api/workouts")))
   )
-  private[this] lazy val controllers_WorkoutController_createWorkout6_invoker = createInvoker(
+  private[this] lazy val controllers_WorkoutController_createWorkout5_invoker = createInvoker(
     WorkoutController_0.get.createWorkout(),
     HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -184,40 +166,34 @@ class Routes(
         controllers_ElasticController_getStats0_invoker.call(ElasticController_1.get.getStats())
       }
   
-    // @LINE:6
-    case controllers_ElasticController_createIndex1_route(params) =>
+    // @LINE:7
+    case controllers_WorkoutController_getHardcoded1_route(params) =>
       call { 
-        controllers_ElasticController_createIndex1_invoker.call(ElasticController_1.get.createIndex())
+        controllers_WorkoutController_getHardcoded1_invoker.call(WorkoutController_0.get.getHardcoded())
       }
   
     // @LINE:8
-    case controllers_WorkoutController_getHardcoded2_route(params) =>
-      call { 
-        controllers_WorkoutController_getHardcoded2_invoker.call(WorkoutController_0.get.getHardcoded())
+    case controllers_WorkoutController_get2_route(params) =>
+      call(params.fromPath[String]("id", None)) { (id) =>
+        controllers_WorkoutController_get2_invoker.call(WorkoutController_0.get.get(id))
       }
   
     // @LINE:9
-    case controllers_WorkoutController_get3_route(params) =>
-      call(params.fromPath[String]("id", None)) { (id) =>
-        controllers_WorkoutController_get3_invoker.call(WorkoutController_0.get.get(id))
+    case controllers_WorkoutController_populate3_route(params) =>
+      call { 
+        controllers_WorkoutController_populate3_invoker.call(WorkoutController_0.get.populate())
       }
   
     // @LINE:10
-    case controllers_WorkoutController_populate4_route(params) =>
-      call { 
-        controllers_WorkoutController_populate4_invoker.call(WorkoutController_0.get.populate())
+    case controllers_WorkoutController_search4_route(params) =>
+      call(params.fromQuery[String]("q", None)) { (q) =>
+        controllers_WorkoutController_search4_invoker.call(WorkoutController_0.get.search(q))
       }
   
     // @LINE:11
-    case controllers_WorkoutController_search5_route(params) =>
-      call(params.fromQuery[String]("q", None)) { (q) =>
-        controllers_WorkoutController_search5_invoker.call(WorkoutController_0.get.search(q))
-      }
-  
-    // @LINE:12
-    case controllers_WorkoutController_createWorkout6_route(params) =>
+    case controllers_WorkoutController_createWorkout5_route(params) =>
       call { 
-        controllers_WorkoutController_createWorkout6_invoker.call(WorkoutController_0.get.createWorkout())
+        controllers_WorkoutController_createWorkout5_invoker.call(WorkoutController_0.get.createWorkout())
       }
   }
 }

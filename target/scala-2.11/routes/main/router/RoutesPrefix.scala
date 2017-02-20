@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
 // @SOURCE:C:/cygwin64/home/alexx/Fitness-By-You-API/conf/routes
-// @DATE:Sun Feb 12 11:45:28 EST 2017
+// @DATE:Sun Feb 19 22:45:57 EST 2017
 
 
 package router {

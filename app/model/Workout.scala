@@ -4,8 +4,8 @@ import play.api.libs.json.Json
 
 import org.joda.time.DateTime
 
-case class WorkoutStep(step: String, iterations: Int) {
-  require (step != null, "step cannot be null")
+case class WorkoutStep(stepName: String, iterations: Int) {
+  require (stepName != null, "step cannot be null")
 }
 
 object WorkoutStep {

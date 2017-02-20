@@ -9,10 +9,13 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
 import model.{Workout, WorkoutStep, WorkoutDao}
+import security. { Authenticator, SimpleAuthenticator, Secured }
+import com.evojam.play.elastic4s.PlayElasticFactory
+import com.evojam.play.elastic4s.configuration.ClusterSetup
 import org.joda.time.DateTime
 
-class WorkoutController @Inject() (workoutDao: WorkoutDao) extends Controller {
-
+class WorkoutController @Inject() (workoutDao: WorkoutDao,  auth: SimpleAuthenticator) extends Controller with Secured {
+  override val authService: Authenticator = auth
   def getHardcoded = Action {
     val workout = Workout(
       workoutId = "workout-1",
@@ -29,7 +32,7 @@ class WorkoutController @Inject() (workoutDao: WorkoutDao) extends Controller {
     Ok(Json.toJson(workout))
   }
 
-  def get(workoutId: String) = Action.async {
+  def get(workoutId: String) =  Action.async { request =>
     workoutDao.getWorkoutById(workoutId) map {
       case None => NotFound
       case Some(workout) => Ok(Json.toJson(workout))

@@ -1,0 +1,5 @@
+New log file opened at Thu Feb 16 12:19:18 EST 2017 by 10284@DESKTOP-KIQ5DGJ
+Sending msg to client play-fork-run-36c675f6-60c1-4ed1-83be-6eb91636f63d: DetachedLogEvent(LogMessage(debug,sbt server socket logs are in: C:\cygwin64\home\alexx\Fitness-By-You-API\.sbtserver\connections\master.log))
+Sending msg to client play-fork-run-36c675f6-60c1-4ed1-83be-6eb91636f63d: DetachedLogEvent(LogMessage(debug,sbt client logs are in: C:\cygwin64\home\alexx\Fitness-By-You-API\.sbtserver\connections\play-fork-run-36c675f6-60c1-4ed1-83be-6eb91636f63d.log))
+Sending msg to client play-fork-run-36c675f6-60c1-4ed1-83be-6eb91636f63d: DetachedLogEvent(LogMessage(debug,sbt general server logs are in: C:\cygwin64\home\alexx\Fitness-By-You-API\.sbtserver\master.log))
+Reading next message from client.

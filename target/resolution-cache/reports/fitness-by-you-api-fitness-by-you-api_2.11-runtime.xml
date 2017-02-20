@@ -7,7 +7,7 @@
 		revision="0.1.0"
 		conf="runtime"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool, fork-run"
-		date="20170211213027"/>
+		date="20170220140126"/>
 	<dependencies>
 		<module organisation="com.evojam" name="play-elastic4s_2.11">
 			<revision name="0.3.1" status="release" pubdate="20160505022333" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/evojam/play-elastic4s" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="55">

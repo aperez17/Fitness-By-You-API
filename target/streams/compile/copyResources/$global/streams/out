@@ -1,6 +1,0 @@
-[0m[[0mdebug[0m] [0mCopy resource mappings: [0m
-[0m[[0mdebug[0m] [0m	(C:\cygwin64\home\alexx\Fitness-By-You-API\conf\application.conf,C:\cygwin64\home\alexx\Fitness-By-You-API\target\scala-2.11\classes\application.conf)[0m
-[0m[[0mdebug[0m] [0m	(C:\cygwin64\home\alexx\Fitness-By-You-API\conf\logback.xml,C:\cygwin64\home\alexx\Fitness-By-You-API\target\scala-2.11\classes\logback.xml)[0m
-[0m[[0mdebug[0m] [0m	(C:\cygwin64\home\alexx\Fitness-By-You-API\conf\routes,C:\cygwin64\home\alexx\Fitness-By-You-API\target\scala-2.11\classes\routes)[0m
-[0m[[0mdebug[0m] [0m	(C:\cygwin64\home\alexx\Fitness-By-You-API\conf\schema-update,C:\cygwin64\home\alexx\Fitness-By-You-API\target\scala-2.11\classes\schema-update)[0m
-[0m[[0mdebug[0m] [0m	(C:\cygwin64\home\alexx\Fitness-By-You-API\conf\schema-update\workout_index.sh,C:\cygwin64\home\alexx\Fitness-By-You-API\target\scala-2.11\classes\schema-update\workout_index.sh)[0m
