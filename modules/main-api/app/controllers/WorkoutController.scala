@@ -1,4 +1,4 @@
-package controllers
+package api.controllers
 
 import javax.inject.Inject
 
@@ -8,8 +8,8 @@ import scala.concurrent.Future
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
-import model.{Workout, WorkoutStep, WorkoutDao}
-import security. { Authenticator, SimpleAuthenticator, Secured }
+import api.model.{Workout, WorkoutStep, WorkoutDao}
+import api.security. { Authenticator, SimpleAuthenticator, Secured }
 import com.evojam.play.elastic4s.PlayElasticFactory
 import com.evojam.play.elastic4s.configuration.ClusterSetup
 import org.joda.time.DateTime

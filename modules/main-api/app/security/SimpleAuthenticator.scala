@@ -1,7 +1,7 @@
-package security
+package api.security
 
 
-import model.{ LoginRequest, User }
+import api.model.{ LoginRequest, User }
 import play.api.mvc.{Action, AnyContent, Cookie, Request, RequestHeader,  Result, Security}
 import play.api.http._
 import play.api.mvc.Results._

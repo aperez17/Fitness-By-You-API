@@ -1,6 +1,6 @@
-package security
+package api.security
 
-import model.User
+import api.model.User
 import play.api.mvc.{Action, AnyContent, Controller, Security, Request, RequestHeader, Result, Results }
 import play.api.libs.json.Json
 import javax.inject.Inject

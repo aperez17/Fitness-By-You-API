@@ -7,4 +7,7 @@ project/target/*
 project/target
 project/project/target
 project/project/target/*
+.cache-main
+.classpath
+.project
 
