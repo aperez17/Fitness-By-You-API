@@ -1,3 +1,6 @@
+.settings
+.sbtserver
+bin
 target
 target/*
 project/target/*
