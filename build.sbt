@@ -1,22 +1,6 @@
-name := "Fitness-By-You-API"
-version := "0.1.0"
-
-lazy val commonSettings = Seq(
-  organization := "com.fitnessbyyou",
-  version := "0.1.0",
-  scalaVersion := "2.11.8"
-)
-
-lazy val esSetup = (project in file("modules/es-setup")).enablePlugins(PlayScala)
-
-lazy val root = (project in file("modules/main-api")).enablePlugins(PlayScala)
-
+name := FitnessByYou.NamePrefix + "root"
+version := "0.0.1"
 scalaVersion := "2.11.8"
-
-
-libraryDependencies ++= Seq(
-  "com.evojam" %% "play-elastic4s" % "0.3.1"
-)
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
@@ -26,7 +10,24 @@ resolvers += Resolver.url("Typesafe Ivy releases", url("https://repo.typesafe.co
 resolvers  += "Online Play Repository" at
   "http://repo.typesafe.com/typesafe/simple/maven-releases/"
 
+
+lazy val esSetup = (project in file("modules/es-setup"))
+	.settings(Common.settings: _*)
+	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
+	.enablePlugins(PlayScala)
+
+lazy val fitnessApi = (project in file("modules/fitness-api"))
+	.settings(Common.settings: _*)
+	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
+	.enablePlugins(PlayScala)
+
+
+libraryDependencies ++= Seq(
+  "com.evojam" %% "play-elastic4s" % "0.3.1"
+)
 routesGenerator := InjectedRoutesGenerator
 
+lazy val root = (project in file(".")).
+	aggregate(fitnessApi, esSetup)
 
 fork in run := false
