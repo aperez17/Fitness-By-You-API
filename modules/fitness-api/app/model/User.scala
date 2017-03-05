@@ -8,7 +8,8 @@ case class User(
     emailAddress: String,
     firstName: Option[String] = None,
     lastName: Option[String] = None,
-    currentWeight: Option[String] = None) {
+    currentWeight: Option[String] = None,
+    lastLoginDate: Option[java.util.Date] = None) {
 }
 
 object User {

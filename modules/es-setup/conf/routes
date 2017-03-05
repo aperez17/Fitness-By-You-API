@@ -3,4 +3,5 @@
 # ~~~~
 
 GET     /es/stats        @es.controllers.ElasticController.getStats()
-POST    /es/createIndex  @es.controllers.ElasticController.createIndex()
+POST    /es/createIndeces  @es.controllers.ElasticController.createIndeces()
+PUT     /es/putMappings   @es.controllers.ElasticController.putMappings()

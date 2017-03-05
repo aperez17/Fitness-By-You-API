@@ -6,4 +6,8 @@ GET     /api/workouts/hardcoded @api.controllers.WorkoutController.getHardcoded(
 GET     /api/workouts/:id       @api.controllers.WorkoutController.get(id: String)
 POST    /api/workouts/populate  @api.controllers.WorkoutController.populate()
 GET     /api/workouts           @api.controllers.WorkoutController.search(q: String)
-POST    /api/workouts            @api.controllers.WorkoutController.createWorkout()
+POST    /api/workouts/create    @api.controllers.WorkoutController.createWorkout()
+
+POST    /api/users/populate     @api.controllers.UserController.populate()
+GET     /api/users              @api.controllers.UserController.search(q: String)
+POST    /api/users/create       @api.controllers.UserController.createUser()
