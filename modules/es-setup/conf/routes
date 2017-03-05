@@ -1,0 +1,6 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /es/stats        @es.controllers.ElasticController.getStats()
+POST    /es/createIndex  @es.controllers.ElasticController.createIndex()

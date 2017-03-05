@@ -2,8 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /es/stats        @api.controllers.ElasticController.getStats()
-
 GET     /api/workouts/hardcoded @api.controllers.WorkoutController.getHardcoded()
 GET     /api/workouts/:id       @api.controllers.WorkoutController.get(id: String)
 POST    /api/workouts/populate  @api.controllers.WorkoutController.populate()
