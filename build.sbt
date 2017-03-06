@@ -21,6 +21,10 @@ lazy val fitnessApi = (project in file("modules/fitness-api"))
 	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
 	.enablePlugins(PlayScala)
 
+lazy val esLink = (project in file("modules/es-link"))
+	.settings(Common.settings: _*)
+	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
+
 
 libraryDependencies ++= Seq(
   "com.evojam" %% "play-elastic4s" % "0.3.1"
@@ -28,6 +32,6 @@ libraryDependencies ++= Seq(
 routesGenerator := InjectedRoutesGenerator
 
 lazy val root = (project in file(".")).
-	aggregate(fitnessApi, esSetup)
+	aggregate(fitnessApi, esSetup, esLink)
 
 fork in run := false

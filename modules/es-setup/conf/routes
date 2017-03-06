@@ -1,7 +1,0 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
-GET     /es/stats        @es.controllers.ElasticController.getStats()
-POST    /es/createIndeces  @es.controllers.ElasticController.createIndeces()
-PUT     /es/putMappings   @es.controllers.ElasticController.putMappings()
