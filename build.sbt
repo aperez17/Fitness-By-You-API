@@ -10,12 +10,6 @@ resolvers += Resolver.url("Typesafe Ivy releases", url("https://repo.typesafe.co
 resolvers  += "Online Play Repository" at
   "http://repo.typesafe.com/typesafe/simple/maven-releases/"
 
-
-lazy val esSetup = (project in file("modules/es-setup"))
-	.settings(Common.settings: _*)
-	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
-	.enablePlugins(PlayScala)
-
 lazy val fitnessApi = (project in file("modules/fitness-api"))
 	.settings(Common.settings: _*)
 	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
@@ -32,6 +26,6 @@ libraryDependencies ++= Seq(
 routesGenerator := InjectedRoutesGenerator
 
 lazy val root = (project in file(".")).
-	aggregate(fitnessApi, esSetup, esLink)
+	aggregate(fitnessApi, esLink)
 
 fork in run := false
