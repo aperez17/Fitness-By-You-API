@@ -11,8 +11,8 @@ object ESRunner extends App {
   println(s"Running with args: ${arguments.mkString(", ")}")
   arguments.map { arg =>
     arg match {
-      case "create" => ESLink.createIndeces(ESMappings.mappings)
-      case "upsert" => ESLink.putMappings(ESMappings.mappings)
+      case "create" => ESLink.createIndeces(ESMappings.getMappings())
+      case "upsert" => ESLink.putMappings(ESMappings.getMappings())
       case "stats" => ESLink.getStats()
       case s =>
         println(s"No action for argument $s")
