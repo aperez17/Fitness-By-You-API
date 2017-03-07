@@ -10,14 +10,19 @@ resolvers += Resolver.url("Typesafe Ivy releases", url("https://repo.typesafe.co
 resolvers  += "Online Play Repository" at
   "http://repo.typesafe.com/typesafe/simple/maven-releases/"
 
+lazy val common = (project in file("modules/common"))
+  .settings(Common.settings: _*)
+
 lazy val fitnessApi = (project in file("modules/fitness-api"))
 	.settings(Common.settings: _*)
 	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
 	.enablePlugins(PlayScala)
+  .dependsOn(common)
 
 lazy val esLink = (project in file("modules/es-link"))
 	.settings(Common.settings: _*)
 	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
+  .dependsOn(common, fitnessApi)
 
 
 libraryDependencies ++= Seq(
