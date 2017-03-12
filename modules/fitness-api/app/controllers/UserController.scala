@@ -8,7 +8,7 @@ import scala.concurrent.Future
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 
-import api.model.{User, UserDao}
+import api.model.{ LoginRequest, User, UserDao}
 import api.security. { Authenticator, SimpleAuthenticator, Secured }
 import com.evojam.play.elastic4s.PlayElasticFactory
 import com.evojam.play.elastic4s.configuration.ClusterSetup
@@ -20,7 +20,7 @@ class UserController @Inject() (userDao: UserDao,  auth: SimpleAuthenticator) ex
   def populate() = Action.async {
     /* You can easily convert this endpoint to a bulk insert. Simply parse a `List[Book]` from
        JSON body and pass it instead of `cannedBulkInput` here. */
-    userDao.insertUser(adminUser) map { resp =>
+    userDao.indexUser("admin", adminUser) map { resp =>
       if(resp.isCreated) {
         Ok(Json.toJson(adminUser))
       } else {
@@ -40,7 +40,7 @@ class UserController @Inject() (userDao: UserDao,  auth: SimpleAuthenticator) ex
   def createUser() = Action.async { request =>
     request.body.asJson.map { json =>
       json.asOpt[User] match {
-        case Some(user) => userDao.insertUser(user) map { resp =>
+        case Some(user) => userDao.indexUser(user.emailAddress, user) map { resp =>
            if(resp.isCreated) {
              Ok(Json.toJson(adminUser))
            } else {
@@ -50,6 +50,10 @@ class UserController @Inject() (userDao: UserDao,  auth: SimpleAuthenticator) ex
         case None => Future.successful(BadRequest("Could not parse Json"))
       }
     } getOrElse { Future.successful(BadRequest("Could not get request body as JSON")) }
+  }
+  
+  def authenticate() = Action.async { request =>
+    auth.authenticate(request)
   }
 
   val adminUser = User(userName = "admin", emailAddress="admin@example.com")

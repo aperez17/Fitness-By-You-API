@@ -22,8 +22,8 @@ object User {
       mappings = List(
           StringFieldMapping(modelName = "userName", isAnalyzed = true),
           StringFieldMapping(modelName = "emailAddress"),
-          StringFieldMapping(modelName = "firstName"),
-          StringFieldMapping(modelName = "lastName"),
+          StringFieldMapping(modelName = "firstName", isAnalyzed = true),
+          StringFieldMapping(modelName = "lastName", isAnalyzed = true),
           DoubleFieldMapping(modelName = "currentWeight"),
           DateFieldMapping(modelName = "lastLoginDate")
        )
@@ -31,7 +31,7 @@ object User {
 }
 
 case class LoginRequest(
-    userName: String,
+    userEmail: String,
     password: String){}
 
 object LoginRequest {

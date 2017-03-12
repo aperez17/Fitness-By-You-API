@@ -28,10 +28,10 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
     request.body.asJson map { json =>
       json.asOpt[LoginRequest] match {
         case Some(loginRequest) =>  {
-          if (loginRequest.userName == "admin" && loginRequest.password == "password") {
-            val jsonAuthToken = Json.toJson(Map(AUTH_TOKEN -> "")).toString
-            val resultWithCookie = Ok(jsonAuthToken).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=jsonAuthToken, secure=true))
-            val updatedSession =  resultWithCookie.session(request) + (Security.username, "admin")
+          if (loginRequest.userEmail == "admin" && loginRequest.password == "password") {
+            val authToken = Map(AUTH_TOKEN -> "SOME_ADMIN_AUTH_TOKEN_123")
+            val resultWithCookie = Ok(Json.toJson(authToken)).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=authToken.get(AUTH_TOKEN).getOrElse(""), secure=true))
+            val updatedSession =  resultWithCookie.session(request) + (Security.username, loginRequest.userEmail)
             Future.successful(resultWithCookie.withSession(updatedSession))
           } else {
             Future.successful(Unauthorized("Incorrect UserName or Password"))
@@ -42,10 +42,10 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
     } getOrElse { Future.successful(BadRequest("Incorrect JSON Format")) }
   }
   
-  def findOneByUsername(userName: String): Option[User] = {
+  def findOneByUserEmail(userEmail: String): Option[User] = {
     val futureResponse =  {
       client execute {
-        get id userName from "users"/"user"
+        get id userEmail from "users"/"user"
       }
     }
     val userString = futureResponse.await(30 seconds).sourceAsString

@@ -14,5 +14,5 @@ trait Authenticator {
   
   def authenticate(request: Request[AnyContent]): Future[Result]
   
-  def findOneByUsername(userName: String): Option[User]
+  def findOneByUserEmail(userEmail: String): Option[User]
 }

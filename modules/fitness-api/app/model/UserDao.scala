@@ -4,6 +4,8 @@ import javax.inject.{Named, Inject}
 
 import scala.concurrent.{ExecutionContext, Future}
 
+import play.api.mvc.Results.Forbidden
+
 import com.sksamuel.elastic4s.{IndexAndType, ElasticDsl}
 
 import com.evojam.play.elastic4s.configuration.ClusterSetup
@@ -13,12 +15,9 @@ class UserDao @Inject()(cs: ClusterSetup, elasticFactory: PlayElasticFactory, @N
     extends ElasticDsl with PlayElasticJsonSupport {
 
   private[this] lazy val client = elasticFactory(cs)
-  def insertUser(user: User) = client execute {
-    index into indexAndType source user
-  }
   
-  def indexUser(userId: String, user: User) = client execute {
-    index into indexAndType source user id userId
+  def indexUser(userEmail: String, user: User) = client execute {
+    index into indexAndType source user id userEmail
   }
   // original elastic4s .source(doc) expects a DocumentSource or T : Indexable.
   // PlayElasticJsonSupport provides Indexable[T] for any T with Json.Writes[T] available.

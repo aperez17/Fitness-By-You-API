@@ -11,3 +11,5 @@ POST    /api/workouts/create    @api.controllers.WorkoutController.createWorkout
 POST    /api/users/populate     @api.controllers.UserController.populate()
 GET     /api/users              @api.controllers.UserController.search(q: String)
 POST    /api/users/create       @api.controllers.UserController.createUser()
+
+POST    /api/login/authenticate @api.controllers.UserController.authenticate()
