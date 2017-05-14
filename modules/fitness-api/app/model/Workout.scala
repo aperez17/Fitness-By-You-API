@@ -35,6 +35,7 @@ object Workout {
   val model =
     ObjectFieldMapping(
       modelName = "workout",
+      modelClass = Some(classOf[Workout]),
       mappings = List(
           StringFieldMapping(modelName = "workoutId", isAnalyzed = true),
           StringFieldMapping(modelName = "name", isAnalyzed = true),

@@ -1,18 +1,14 @@
-package api.model
+package api.dao
 
-import javax.inject.{Named, Inject}
-
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import api.model.Workout
+import com.sksamuel.elastic4s.IndexAndTypes.apply
+import com.sksamuel.elastic4s.IndexesAndTypes.apply
+import api.model.ElasticModel
 
-import com.sksamuel.elastic4s.{IndexAndType, ElasticDsl}
-
-import com.evojam.play.elastic4s.configuration.ClusterSetup
-import com.evojam.play.elastic4s.{PlayElasticFactory, PlayElasticJsonSupport}
-
-class WorkoutDao @Inject()(cs: ClusterSetup, elasticFactory: PlayElasticFactory, @Named("workout") indexAndType: IndexAndType)
-    extends ElasticDsl with PlayElasticJsonSupport {
-
-  private[this] lazy val client = elasticFactory(cs)
+class WorkoutDao @Inject()(elasticModel: ElasticModel) extends ElasticDao(elasticModel) {
+  
   def getWorkoutById(workoutId: String)(implicit ec: ExecutionContext): Future[Option[Workout]] = client execute {
     get id workoutId from indexAndType
   } map (_.as[Workout])

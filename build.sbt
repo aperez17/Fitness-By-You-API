@@ -19,11 +19,15 @@ lazy val fitnessApi = (project in file("modules/fitness-api"))
 	.enablePlugins(PlayScala)
   .dependsOn(common)
 
+lazy val executableApplications = (project in file("modules/executable-applications"))
+  .settings(Common.settings: _*)
+  .settings(libraryDependencies ++= Dependencies.elasticDependencies)
+  .dependsOn(common, fitnessApi)
+
 lazy val esLink = (project in file("modules/es-link"))
 	.settings(Common.settings: _*)
 	.settings(libraryDependencies ++= Dependencies.elasticDependencies)
   .dependsOn(common, fitnessApi)
-
 
 libraryDependencies ++= Seq(
   "com.evojam" %% "play-elastic4s" % "0.3.1"

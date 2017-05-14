@@ -1,0 +1,12 @@
+api.model.Workout.steps.stepName=Step Name
+api.model.User.lastName=Last Name
+api.model.Workout.iterations=Iterations
+api.model.User.emailAddress=Email Address
+api.model.User.firstName=First Name
+api.model.User.lastLoginDate=Last Login Date
+api.model.Workout.workoutId=Workout Id
+api.model.User.currentWeight=Current Weight
+api.model.Workout.steps.iterations=Iterations
+api.model.Workout.name=Name
+api.model.User.userName=User Name
+api.model.Workout.imageURL=Image U R L

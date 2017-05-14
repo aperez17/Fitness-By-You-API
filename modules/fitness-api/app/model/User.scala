@@ -19,6 +19,7 @@ object User {
   val model = 
     ObjectFieldMapping(
       modelName = "user",
+      modelClass = Some(classOf[User]),
       mappings = List(
           StringFieldMapping(modelName = "userName", isAnalyzed = true),
           StringFieldMapping(modelName = "emailAddress"),

@@ -1,20 +1,18 @@
 package api.controllers
 
 import javax.inject.Inject
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
-
-import api.model.{Workout, WorkoutStep, WorkoutDao}
+import api.model.{Workout, WorkoutStep}
+import api.dao.WorkoutDao
 import api.security. { Authenticator, SimpleAuthenticator, Secured }
 import com.evojam.play.elastic4s.PlayElasticFactory
 import com.evojam.play.elastic4s.configuration.ClusterSetup
 import org.joda.time.DateTime
 
-class WorkoutController @Inject() (workoutDao: WorkoutDao,  auth: SimpleAuthenticator) extends Controller with Secured {
+class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAuthenticator) extends Controller with Secured {
   override val authService: Authenticator = auth
   def getHardcoded = Action {
     val workout = Workout(
@@ -33,7 +31,7 @@ class WorkoutController @Inject() (workoutDao: WorkoutDao,  auth: SimpleAuthenti
   }
 
   def get(workoutId: String) =  Action.async { request =>
-    workoutDao.getWorkoutById(workoutId) map {
+    workoutResource.getWorkoutById(workoutId) map {
       case None => NotFound
       case Some(workout) => Ok(Json.toJson(workout))
     }
@@ -42,14 +40,14 @@ class WorkoutController @Inject() (workoutDao: WorkoutDao,  auth: SimpleAuthenti
   def populate() = Action.async {
     /* You can easily convert this endpoint to a bulk insert. Simply parse a `List[Book]` from
        JSON body and pass it instead of `cannedBulkInput` here. */
-    workoutDao.bulkIndex(cannedBulkInput) map {
+    workoutResource.bulkIndex(cannedBulkInput) map {
       case resp if !resp.hasFailures => Ok
       case resp => InternalServerError(resp.failures.map(f => f.failureMessage) mkString ";")
     }
   }
 
   def search(q: String) = Action.async {
-    workoutDao.searchByQueryString(q) map {
+    workoutResource.searchByQueryString(q) map {
       case workouts if workouts.length > 0 =>
         Ok(Json.toJson(workouts)).withHeaders("X-Total-Count" -> workouts.length.toString)
       case empty => NoContent
@@ -59,7 +57,7 @@ class WorkoutController @Inject() (workoutDao: WorkoutDao,  auth: SimpleAuthenti
   def createWorkout() = Action.async { request =>
     request.body.asJson.map { json =>
       json.asOpt[Workout] match {
-        case Some(workout) => workoutDao.bulkIndex(List(workout)) map {
+        case Some(workout) => workoutResource.bulkIndex(List(workout)) map {
           case resp if !resp.hasFailures => Ok
           case resp => InternalServerError(resp.failures.map(f => f.failureMessage) mkString ";")
         }

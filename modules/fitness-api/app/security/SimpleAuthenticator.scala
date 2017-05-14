@@ -1,21 +1,26 @@
 package api.security
 
 
-import api.model.{ LoginRequest, User }
-import play.api.mvc.{Action, AnyContent, Cookie, Request, RequestHeader,  Result, Security}
-import play.api.http._
-import play.api.mvc.Results._
-import play.api.libs.json.Json
-import javax.inject._
-import scala.concurrent.{Future, ExecutionContext}
-import scala.concurrent.duration._
-import ExecutionContext.Implicits.global
-
-import com.sksamuel.elastic4s.ElasticDsl
+import scala.concurrent.Future
+import scala.concurrent.duration.DurationInt
 
 import com.evojam.play.elastic4s.PlayElasticFactory
 import com.evojam.play.elastic4s.configuration.ClusterSetup
-import play.mvc.Http
+import com.sksamuel.elastic4s.ElasticDsl
+
+import api.model.LoginRequest
+import api.model.User
+import api.model.SimpleMessage
+import javax.inject.Inject
+import play.api.libs.json.Json
+import play.api.mvc.AnyContent
+import play.api.mvc.Cookie
+import play.api.mvc.Request
+import play.api.mvc.Result
+import play.api.mvc.Results.BadRequest
+import play.api.mvc.Results.Ok
+import play.api.mvc.Results.Unauthorized
+import play.api.mvc.Security
 
 class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElasticFactory) extends Authenticator with ElasticDsl {
   
@@ -30,7 +35,8 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
         case Some(loginRequest) =>  {
           if (loginRequest.userEmail == "admin" && loginRequest.password == "password") {
             val authToken = Map(AUTH_TOKEN -> "SOME_ADMIN_AUTH_TOKEN_123")
-            val resultWithCookie = Ok(Json.toJson(authToken)).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=authToken.get(AUTH_TOKEN).getOrElse(""), secure=true))
+            val user = findOneByUserEmail(loginRequest.userEmail).get // We need to throw error if we can't grab user
+            val resultWithCookie = Ok(Json.toJson(user)).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=authToken.get(AUTH_TOKEN).getOrElse(""), secure=true))
             val updatedSession =  resultWithCookie.session(request) + (Security.username, loginRequest.userEmail)
             Future.successful(resultWithCookie.withSession(updatedSession))
           } else {
@@ -42,12 +48,17 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
     } getOrElse { Future.successful(BadRequest("Incorrect JSON Format")) }
   }
   
+  def logout(request: Request[AnyContent]): Future[Result] = {
+    Future.successful(Ok(Json.toJson(SimpleMessage("Successfully Logged out"))))
+  }
+  
   def findOneByUserEmail(userEmail: String): Option[User] = {
     val futureResponse =  {
       client execute {
         get id userEmail from "users"/"user"
       }
     }
+    // TODO FIND A WAY WITHOUT AWAIT TOO RISKY
     val userString = futureResponse.await(30 seconds).sourceAsString
     Json.parse(userString).asOpt[User]
   }

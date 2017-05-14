@@ -13,3 +13,4 @@ GET     /api/users              @api.controllers.UserController.search(q: String
 POST    /api/users/create       @api.controllers.UserController.createUser()
 
 POST    /api/login/authenticate @api.controllers.UserController.authenticate()
+GET		/api/login/logout	 	@api.controllers.UserController.logout()
