@@ -7,6 +7,9 @@ trait ModelMapping {
   val isNested: Boolean
   val isAnalyzed: Boolean
   val mappings: List[ModelMapping]
+  val isRequired: Boolean
+  val isDisplayed: Boolean
+  val isElasticModel: Boolean
 }
 
 case class ObjectFieldMapping(
@@ -15,7 +18,10 @@ case class ObjectFieldMapping(
     modelClass: Option[Class[_]],
     isNested: Boolean = false,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping
     
 case class NestedFieldMapping(
     modelName: String,
@@ -23,7 +29,10 @@ case class NestedFieldMapping(
     modelClass: Option[Class[_]] = None,
     isNested: Boolean = true,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping
 
 case class StringFieldMapping(
     modelName: String,
@@ -31,7 +40,10 @@ case class StringFieldMapping(
     modelClass: Option[Class[_]] = None,
     isNested: Boolean = false,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping] = List.empty[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping] = List.empty[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping
 
 case class DoubleFieldMapping(
     modelName: String,
@@ -39,7 +51,10 @@ case class DoubleFieldMapping(
     modelClass: Option[Class[_]] = None,
     isNested: Boolean = false,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping] = List.empty[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping] = List.empty[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping
     
 case class FloatFieldMapping(
     modelName: String,
@@ -47,7 +62,10 @@ case class FloatFieldMapping(
     modelClass: Option[Class[_]] = None,
     isNested: Boolean = false,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping] = List.empty[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping] = List.empty[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping
     
 case class BooleanFieldMapping(
     modelName: String,
@@ -55,7 +73,10 @@ case class BooleanFieldMapping(
     modelClass: Option[Class[_]] = None,
     isNested: Boolean = false,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping] = List.empty[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping] = List.empty[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping
   
 case class IntegerFieldMapping(
     modelName: String,
@@ -63,7 +84,10 @@ case class IntegerFieldMapping(
     modelClass: Option[Class[_]] = None,
     isNested: Boolean = false,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping] = List.empty[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping] = List.empty[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping
     
 case class DateFieldMapping(
     modelName: String,
@@ -71,4 +95,7 @@ case class DateFieldMapping(
     modelClass: Option[Class[_]] = None,
     isNested: Boolean = false,
     isAnalyzed: Boolean = false,
-    mappings: List[ModelMapping] = List.empty[ModelMapping]) extends ModelMapping
+    mappings: List[ModelMapping] = List.empty[ModelMapping],
+    isRequired: Boolean = false,
+    isDisplayed: Boolean = true,
+    isElasticModel: Boolean = false) extends ModelMapping

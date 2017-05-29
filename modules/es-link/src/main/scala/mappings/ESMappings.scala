@@ -12,7 +12,7 @@ import common.model._
 object ESMappings extends ElasticDsl{
   
   def getMappings(): Map[String, MappingDefinition] = {
-    RegisteredModels.register.map { case (indexName, modelMap) => indexName -> mappingFromModel(modelMap) }
+    RegisteredModels.register.filter(_._2.isElasticModel).map { case (indexName, modelMap) => indexName -> mappingFromModel(modelMap) }
   }
   
   private def fieldsFromModel(modelMapping: ModelMapping): TypedFieldDefinition = {

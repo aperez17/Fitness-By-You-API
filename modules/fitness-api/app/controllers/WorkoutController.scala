@@ -20,12 +20,12 @@ class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAut
       name = "Workout 1",
       imageURL = Some("https://cdn.muscleandstrength.com/sites/all/themes/mnsnew/images/taxonomy/workouts/strength.jpg"),
       steps = List(
-        WorkoutStep("Deadlifts", 30),
-        WorkoutStep("Squats", 25),
-        WorkoutStep("Pushup", 30),
-        WorkoutStep("Squat Jumps", 25),
-        WorkoutStep("Tricep Dips", 30)),
-      time = 30
+        WorkoutStep("Deadlifts", 30, 5),
+        WorkoutStep("Squats", 25, 5),
+        WorkoutStep("Pushup", 30, 5),
+        WorkoutStep("Squat Jumps", 25, 5),
+        WorkoutStep("Tricep Dips", 30, 5)),
+      totalTime = 30
     )
     Ok(Json.toJson(workout))
   }
@@ -72,35 +72,36 @@ class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAut
       name = "Workout 1",
       imageURL = Some("https://cdn.muscleandstrength.com/sites/all/themes/mnsnew/images/taxonomy/workouts/strength.jpg"),
       steps = List(
-        WorkoutStep("Deadlifts", 30),
-        WorkoutStep("Squats", 25),
-        WorkoutStep("Pushup", 30),
-        WorkoutStep("Squat Jumps", 25),
-        WorkoutStep("Tricep Dips", 30)),
-      time = 30
+        WorkoutStep("Deadlifts", 30, 5),
+        WorkoutStep("Squats", 25, 5),
+        WorkoutStep("Pushup", 30, 5),
+        WorkoutStep("Squat Jumps", 25, 5),
+        WorkoutStep("Tricep Dips", 30, 5)),
+      totalTime = 30
     ),
    Workout(
       workoutId = "workout-2",
       name = "Workout 2",
       imageURL = Some("https://cdn.muscleandstrength.com/sites/all/themes/mnsnew/images/taxonomy/workouts/strength.jpg"),
       steps = List(
-        WorkoutStep("Curls", 10),
-        WorkoutStep("Skull Crushers", 20),
-        WorkoutStep("Squats", 10),
-        WorkoutStep("Deadlifts", 30),
-        WorkoutStep("Pullups", 15)),
-      time = 40
+        WorkoutStep("Curls", 10, 5),
+        WorkoutStep("Skull Crushers", 20, 5),
+        WorkoutStep("Squats", 10, 5),
+        WorkoutStep("Deadlifts", 30, 5),
+        WorkoutStep("Pullups", 15, 5)),
+      totalTime = 40
     ),
     Workout(
       workoutId = "workout-3",
       name = "Killer Abs",
+      imageURL = None,
       steps = List(
-          WorkoutStep("V-Ups", 50),
-          WorkoutStep("Side-to-side V-Ups", 50),
-          WorkoutStep("Straddle Ups", 50),
-          WorkoutStep("1-leg V-Ups", 50),
-          WorkoutStep("Punching Crunchups", 50),
-          WorkoutStep("Crunches", 50)),
-       time = 12
+          WorkoutStep("V-Ups", 50, 5),
+          WorkoutStep("Side-to-side V-Ups", 50, 5),
+          WorkoutStep("Straddle Ups", 50, 5),
+          WorkoutStep("1-leg V-Ups", 50, 5),
+          WorkoutStep("Punching Crunchups", 50, 5),
+          WorkoutStep("Crunches", 50, 5)),
+       totalTime = 12
     ))
 }

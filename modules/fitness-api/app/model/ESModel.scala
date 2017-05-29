@@ -7,7 +7,6 @@ import com.evojam.play.elastic4s.PlayElasticFactory
 
 case class ElasticModel @Inject()(
     cs: ClusterSetup,
-    elasticFactory: PlayElasticFactory,
-    @Named("workout") indexAndType: IndexAndType){ 
+    elasticFactory: PlayElasticFactory){ 
   lazy val client = elasticFactory(cs)
 }

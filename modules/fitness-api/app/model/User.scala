@@ -1,7 +1,10 @@
 package api.model
 
+import common.model.DateFieldMapping
+import common.model.DoubleFieldMapping
+import common.model.ObjectFieldMapping
+import common.model.StringFieldMapping
 import play.api.libs.json.Json
-import common.model._
 
 
 case class User(
@@ -10,6 +13,7 @@ case class User(
     firstName: Option[String] = None,
     lastName: Option[String] = None,
     currentWeight: Option[Double] = None,
+    profilePicture: Option[String] = None,
     lastLoginDate: Option[java.util.Date] = None) {
 }
 
@@ -20,11 +24,13 @@ object User {
     ObjectFieldMapping(
       modelName = "user",
       modelClass = Some(classOf[User]),
+      isElasticModel = true,
       mappings = List(
-          StringFieldMapping(modelName = "userName", isAnalyzed = true),
-          StringFieldMapping(modelName = "emailAddress"),
+          StringFieldMapping(modelName = "userName", isAnalyzed = true, isRequired = true),
+          StringFieldMapping(modelName = "emailAddress", isRequired = true),
           StringFieldMapping(modelName = "firstName", isAnalyzed = true),
           StringFieldMapping(modelName = "lastName", isAnalyzed = true),
+          StringFieldMapping(modelName = "profilePicture"),
           DoubleFieldMapping(modelName = "currentWeight"),
           DateFieldMapping(modelName = "lastLoginDate")
        )
@@ -32,9 +38,34 @@ object User {
 }
 
 case class LoginRequest(
-    userEmail: String,
+    username: String,
     password: String){}
 
 object LoginRequest {
   implicit val format = Json.format[LoginRequest]
+}
+
+case class UserCreationRequest(
+    userEmail: String,
+    emailAddress: String,
+    password: String,
+    firstName: Option[String] = None,
+    lastName: Option[String] = None,
+    currentWeight: Option[Double] = None)
+    
+object UserCreationRequest {
+  implicit val format = Json.format[UserCreationRequest]
+  val model = 
+    ObjectFieldMapping(
+      modelName = "user",
+      modelClass = Some(classOf[User]),
+      mappings = List(
+          StringFieldMapping(modelName = "userName", isAnalyzed = true, isRequired = true),
+          StringFieldMapping(modelName = "emailAddress", isRequired = true),
+          StringFieldMapping(modelName = "firstName", isAnalyzed = true),
+          StringFieldMapping(modelName = "lastName", isAnalyzed = true),
+          DoubleFieldMapping(modelName = "currentWeight"),
+          DateFieldMapping(modelName = "lastLoginDate")
+       )
+    )
 }

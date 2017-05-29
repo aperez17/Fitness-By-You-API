@@ -1,13 +1,15 @@
 package api.dao
 
 import javax.inject.Inject
+import javax.inject.Named
 import scala.concurrent.{ExecutionContext, Future}
 import api.model.Workout
+import com.sksamuel.elastic4s.IndexAndType
 import com.sksamuel.elastic4s.IndexAndTypes.apply
 import com.sksamuel.elastic4s.IndexesAndTypes.apply
 import api.model.ElasticModel
 
-class WorkoutDao @Inject()(elasticModel: ElasticModel) extends ElasticDao(elasticModel) {
+class WorkoutDao @Inject()(elasticModel: ElasticModel, @Named("workout") indexAndType: IndexAndType) extends ElasticDao(elasticModel, indexAndType) {
   
   def getWorkoutById(workoutId: String)(implicit ec: ExecutionContext): Future[Option[Workout]] = client execute {
     get id workoutId from indexAndType

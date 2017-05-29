@@ -1,21 +1,23 @@
 package api.dao
 
 import javax.inject.Inject
+import javax.inject.Named
 import scala.concurrent.ExecutionContext
 import api.model.User
 import com.sksamuel.elastic4s.IndexAndTypes.apply
 import com.sksamuel.elastic4s.IndexesAndTypes.apply
+import com.sksamuel.elastic4s.IndexAndType
 import api.model.ElasticModel
 
-class UserDao @Inject()(esModel: ElasticModel) extends ElasticDao(esModel) {
+class UserDao @Inject()(esModel: ElasticModel, @Named("user") indexAndType: IndexAndType) extends ElasticDao(esModel, indexAndType) {
   
   def indexUser(userEmail: String, user: User) = client execute {
     index into indexAndType source user id userEmail
   }
 
-  def bulkIndex(workouts: Iterable[User]) = client execute {
+  def bulkIndex(users: Iterable[User]) = client execute {
     bulk {
-      workouts map (workout => index into indexAndType source workout)
+      users map (user => index into indexAndType source user)
     }
   }
 

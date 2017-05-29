@@ -5,8 +5,7 @@ import play.api.libs.json.Json
 import org.joda.time.DateTime
 import common.model._
 
-case class WorkoutStep(stepName: String, iterations: Int) {
-  require (stepName != null, "step cannot be null")
+case class WorkoutStep(step: String, iterations: Int, time: Int) {
 }
 
 object WorkoutStep {
@@ -16,13 +15,18 @@ object WorkoutStep {
     NestedFieldMapping(
       modelName = "steps",
       mappings = List(
-          StringFieldMapping(modelName = "stepName", isAnalyzed = true),
-          IntegerFieldMapping(modelName = "iterations")
+          StringFieldMapping(modelName = "step", isRequired = true),
+          IntegerFieldMapping(modelName = "iterations", isRequired = true),
+          IntegerFieldMapping(modelName = "time", isRequired = true)
        )
     )
 }
 
-case class Workout(workoutId: String, name: String, imageURL: Option[String] = None, steps: List[WorkoutStep], time: Int) {
+case class Workout(workoutId: String,
+    name: String,
+    imageURL: Option[String] = None,
+    steps: List[WorkoutStep],
+    totalTime: Int) {
   require(workoutId != null, "id cannot be null")
   require(name != null, "name cannot be null")
   require(steps != null, "steps cannot be null")
@@ -36,12 +40,14 @@ object Workout {
     ObjectFieldMapping(
       modelName = "workout",
       modelClass = Some(classOf[Workout]),
+      isElasticModel = true,
       mappings = List(
-          StringFieldMapping(modelName = "workoutId", isAnalyzed = true),
-          StringFieldMapping(modelName = "name", isAnalyzed = true),
-          StringFieldMapping(modelName = "imageURL", isAnalyzed = true),
+          StringFieldMapping(modelName = "workoutId", isAnalyzed = true, isRequired = true, isDisplayed = false),
+          StringFieldMapping(modelName = "name", isAnalyzed = true, isRequired = true),
+          StringFieldMapping(modelName = "workoutImage", isAnalyzed = true),
           WorkoutStep.model,
-          IntegerFieldMapping(modelName = "iterations")
+          IntegerFieldMapping(modelName = "iterations", isRequired = true),
+          IntegerFieldMapping(modelName = "totalTime", isRequired = true)
        )
     )
 }
