@@ -6,6 +6,8 @@ import common.model.ObjectFieldMapping
 import common.model.StringFieldMapping
 import play.api.libs.json.Json
 
+import com.sksamuel.elastic4s.source.Indexable
+
 
 case class User(
     userName: String,
@@ -19,6 +21,10 @@ case class User(
 
 object User {
   implicit val format = Json.format[User]
+  
+  implicit object UserIndexable extends Indexable[User] {
+    override def json(t: User): String = Json.toJson(t).toString()
+  }
   
   val model = 
     ObjectFieldMapping(

@@ -1,6 +1,7 @@
 package api.model
 
 import play.api.libs.json.Json
+import com.sksamuel.elastic4s.source.Indexable
 
 import org.joda.time.DateTime
 import common.model._
@@ -35,6 +36,9 @@ case class Workout(workoutId: String,
 
 object Workout {
   implicit val format = Json.format[Workout]
+  implicit object WorkoutIndexable extends Indexable[Workout] {
+    override def json(t: Workout): String = Json.toJson(t).toString()
+  }
   
   val model =
     ObjectFieldMapping(
