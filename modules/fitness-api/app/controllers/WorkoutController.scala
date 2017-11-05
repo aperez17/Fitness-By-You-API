@@ -1,16 +1,21 @@
 package api.controllers
 
 import javax.inject.Inject
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import api.model.{Workout, WorkoutStep}
 import api.dao.WorkoutDao
-import api.security. { Authenticator, SimpleAuthenticator, Secured }
+import api.security.{Authenticator, Secured, SimpleAuthenticator}
 import com.evojam.play.elastic4s.PlayElasticFactory
 import com.evojam.play.elastic4s.configuration.ClusterSetup
 import org.joda.time.DateTime
+import api.model.Responses
+
+import scala.util.{Failure, Success}
+
 
 class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAuthenticator) extends Controller with Secured {
   override val authService: Authenticator = auth
@@ -30,19 +35,9 @@ class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAut
     Ok(Json.toJson(workout))
   }
 
-  def get(workoutId: String) =  Action.async { request =>
-    workoutResource.getById(workoutId) match {
-      case None => NotFound
-      case Some(workout) => Ok(Json.toJson(workout))
-    }
-  }
-
   def populate() = Action.async {
-    /* You can easily convert this endpoint to a bulk insert. Simply parse a `List[Book]` from
-       JSON body and pass it instead of `cannedBulkInput` here. */
-    workoutResource.bulkIndex(cannedBulkInput) map {
-      case resp if !resp.hasFailures => Ok
-      case resp => InternalServerError(resp.failures.map(f => f.failureMessage) mkString ";")
+    workoutResource.bulkIndex(cannedBulkInput) map (_ => Ok) recoverWith {
+      case err => Future.successful(InternalServerError(err.getMessage))
     }
   }
 
@@ -53,13 +48,19 @@ class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAut
       case empty => NoContent
     }
   }
+
+  def get(id: String) = Action.async {
+    workoutResource.getById(id) map {
+      case Some(workout) => Ok(Json.toJson(workout))
+      case None => InternalServerError("Could not find workout")
+    }
+  }
   
   def createWorkout() = Action.async { request =>
     request.body.asJson.map { json =>
       json.asOpt[Workout] match {
-        case Some(workout) => workoutResource.bulkIndex(List(workout)) map {
-          case resp if !resp.hasFailures => Ok
-          case resp => InternalServerError(resp.failures.map(f => f.failureMessage) mkString ";")
+        case Some(workout) => workoutResource.indexObject(workout) map (_ => Ok) recoverWith {
+          case err => Future.successful(InternalServerError(err.getMessage))
         }
         case None => Future.successful(BadRequest("Could not parse Json"))
       }

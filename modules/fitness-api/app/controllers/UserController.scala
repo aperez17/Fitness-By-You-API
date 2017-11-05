@@ -28,9 +28,9 @@ class UserController @Inject() (resource: UserDao,  auth: SimpleAuthenticator) e
 
   def search(q: String) = Action.async {
     resource.searchByQueryString(q) map {
-      case users if users.length > 0 =>
+      case users if users.nonEmpty =>
         Ok(Json.toJson(users)).withHeaders("X-Total-Count" -> users.length.toString)
-      case empty => NoContent
+      case _ => NoContent
     }
   }
   
