@@ -31,7 +31,7 @@ class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAut
   }
 
   def get(workoutId: String) =  Action.async { request =>
-    workoutResource.getWorkoutById(workoutId) map {
+    workoutResource.getById(workoutId) match {
       case None => NotFound
       case Some(workout) => Ok(Json.toJson(workout))
     }

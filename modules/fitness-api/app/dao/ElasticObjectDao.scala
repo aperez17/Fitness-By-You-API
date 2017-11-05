@@ -2,6 +2,8 @@ package api.dao
 
 import scala.concurrent.ExecutionContext
 
+import play.api.libs.json.OFormat
+
 import com.sksamuel.elastic4s.IndexAndType
 import com.sksamuel.elastic4s.IndexAndTypes.apply
 import com.sksamuel.elastic4s.IndexesAndTypes.apply
@@ -15,7 +17,7 @@ import javax.inject.Named
 /**
  * An extensible class for easy methods for indexing, get, update, deletes, search
  */
-class ElasticObjectDao[T] (esModel: ElasticModel, indexAndType: IndexAndType)(implicit indexable: Indexable[T])  extends ElasticDao(esModel, indexAndType) {
+class ElasticObjectDao[T] (esModel: ElasticModel, indexAndType: IndexAndType)(implicit indexable: Indexable[T], implicit format: OFormat[T])  extends ElasticDao(esModel, indexAndType) {
   
   def indexUser(userEmail: String, user: User) = client execute {
     index into indexAndType source user id userEmail
@@ -54,11 +56,11 @@ class ElasticObjectDao[T] (esModel: ElasticModel, indexAndType: IndexAndType)(im
   
   def getById(idStr: String) = client execute {
     get id idStr from indexAndType
-  }
+  } map (_.as[T])
   
   def updateObj(obj: T, idStr: String) = client execute {
     update id idStr in indexAndType docAsUpsert obj
-  }
+  } map (_.as[T])
   
   def deleteObj(idStr: String) = client execute {
     delete id idStr from indexAndType

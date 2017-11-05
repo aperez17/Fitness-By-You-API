@@ -9,6 +9,6 @@ import com.sksamuel.elastic4s.IndexAndTypes.apply
 import com.sksamuel.elastic4s.IndexesAndTypes.apply
 import api.model.ElasticModel
 
-class WorkoutDao @Inject()(esModel: ElasticModel, @Named("workout") indexAndType: IndexAndType) extends ElasticObjectDao[Workout](esModel, indexAndType)(Workout.WorkoutIndexable) {
+class WorkoutDao @Inject()(esModel: ElasticModel, @Named("workout") indexAndType: IndexAndType) extends ElasticObjectDao[Workout](esModel, indexAndType)(Workout.WorkoutIndexable, Workout.format) {
   
 }

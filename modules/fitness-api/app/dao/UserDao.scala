@@ -12,6 +12,6 @@ import api.model.User
 import javax.inject.Inject
 import javax.inject.Named
 
-class UserDao @Inject()(esModel: ElasticModel, @Named("user") indexAndType: IndexAndType) extends ElasticObjectDao[User](esModel, indexAndType)(User.UserIndexable){
+class UserDao @Inject()(esModel: ElasticModel, @Named("user") indexAndType: IndexAndType) extends ElasticObjectDao[User](esModel, indexAndType)(User.UserIndexable, User.format){
   
 }
