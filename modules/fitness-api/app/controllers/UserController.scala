@@ -1,17 +1,19 @@
 package api.controllers
 
 import javax.inject.Inject
+
+import api.dao.UserDao
+import api.model.Responses
+import api.model.User
+import api.security.Authenticator
+import api.security.Secured
+import api.security.SimpleAuthenticator
+import play.api.libs.json.Json
+import play.api.mvc.Action
+import play.api.mvc.Controller
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import play.api.libs.json.Json
-import play.api.mvc.{Action, Controller}
-import api.model.{ LoginRequest, User}
-import api.dao.UserDao
-import api.security. { Authenticator, SimpleAuthenticator, Secured }
-import com.evojam.play.elastic4s.PlayElasticFactory
-import com.evojam.play.elastic4s.configuration.ClusterSetup
-import org.joda.time.DateTime
-import api.model.Responses
 
 class UserController @Inject() (resource: UserDao,  auth: SimpleAuthenticator) extends Controller with Secured {
   override val authService: Authenticator = auth
@@ -47,6 +49,10 @@ class UserController @Inject() (resource: UserDao,  auth: SimpleAuthenticator) e
         case None => Future.successful(BadRequest("Could not parse Json"))
       }
     } getOrElse { Future.successful(BadRequest("Could not get request body as JSON")) }
+  }
+
+  def authenticated() = Action.async { request =>
+    auth.isAuthenticated(request)
   }
   
   def authenticate() = Action.async { request =>

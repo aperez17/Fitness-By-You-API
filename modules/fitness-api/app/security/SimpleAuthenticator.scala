@@ -1,32 +1,31 @@
 package api.security
 
 
-import scala.concurrent.Future
-import scala.concurrent.duration.DurationInt
+import javax.inject.Inject
 
+import api.model.LoginRequest
+import api.model.Responses
+import api.model.User
 import com.evojam.play.elastic4s.PlayElasticFactory
 import com.evojam.play.elastic4s.configuration.ClusterSetup
 import com.sksamuel.elastic4s.ElasticDsl
-
-import api.model.LoginRequest
-import api.model.User
-import api.model.Responses
-import javax.inject.Inject
 import play.api.libs.json.Json
 import play.api.mvc.AnyContent
 import play.api.mvc.Cookie
+import play.api.mvc.DiscardingCookie
 import play.api.mvc.Request
 import play.api.mvc.Result
-import play.api.mvc.Results.BadRequest
-import play.api.mvc.Results.Ok
-import play.api.mvc.Results.Unauthorized
 import play.api.mvc.Security
+import play.api.mvc.Session
+
+import scala.concurrent.Future
+import scala.concurrent.duration.DurationInt
 
 class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElasticFactory) extends Authenticator with ElasticDsl {
   
   private lazy val client = elasticFactory(cs)
-  final val AUTH_TOKEN_HEADER = "X-AUTH-TOKEN";
-  final val AUTH_TOKEN = "authToken";
+  final val AUTH_TOKEN_HEADER = "X-AUTH-TOKEN"
+  final val AUTH_TOKEN = "authToken"
   final val MAX_AGE = 18000
   
   def authenticate(request: Request[AnyContent]): Future[Result] = {
@@ -39,8 +38,8 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
               case Some(u) => u
               case _ => return Future.successful(Responses.buildUnauthorizedResult("Incorrect username or password"))
             }
-            val resultWithCookie = Responses.buildOkayResult(Json.toJson(user)).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=authToken.get(AUTH_TOKEN).getOrElse(""), secure=true))
-            val updatedSession =  resultWithCookie.session(request) + (Security.username, loginRequest.username)
+            val resultWithCookie: Result = Responses.buildOkayResult(Json.toJson(user)).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=authToken.get(AUTH_TOKEN).getOrElse(""), secure=true))
+            val updatedSession: Session =  resultWithCookie.session(request) + (Security.username, loginRequest.username)
             Future.successful(resultWithCookie.withSession(updatedSession))
           } else {
             Future.successful(Responses.buildUnauthorizedResult("Incorrect UserName or Password"))
@@ -50,9 +49,23 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
       }
     } getOrElse { Future.successful(Responses.buildBadRequest("Incorrect JSON Format")) }
   }
+
+  def isAuthenticated(request: Request[AnyContent]): Future[Result] = {
+    println(request.cookies)
+    // Havent' figured out the cookie scenario yet
+    val isCookieThere = true//request.cookies.nonEmpty && request.cookies.head.secure && request.cookies.head.name == AUTH_TOKEN
+    val isSessionActive = request.session.data.get(Security.username).nonEmpty
+    if (isCookieThere && isSessionActive) {
+      Future.successful(Responses.buildOkayResult(Json.toJson("Authenticated")))
+    } else {
+      Future.successful(Responses.buildUnauthorizedResult("User is not logged in"))
+    }
+  }
   
   def logout(request: Request[AnyContent]): Future[Result] = {
-    Future.successful(Responses.buildOkayResult(Json.toJson("Success"), Some("Successfully Logged out")))
+    val result = Responses.buildOkayResult(Json.toJson("Success"), Some("Successfully Logged out")).discardingCookies(DiscardingCookie(AUTH_TOKEN))
+    val updatedSession: Session = result.session(request) - Security.username
+    Future.successful(result.withSession(updatedSession))
   }
   
   def findOneByUserEmail(userEmail: String): Option[User] = {
