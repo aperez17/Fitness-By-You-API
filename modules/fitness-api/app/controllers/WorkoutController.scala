@@ -2,19 +2,19 @@ package api.controllers
 
 import javax.inject.Inject
 
+import api.dao.WorkoutDao
+import api.model.Responses
+import api.model.Workout
+import api.model.WorkoutStep
+import api.security.Authenticator
+import api.security.Secured
+import api.security.SimpleAuthenticator
+import play.api.libs.json.Json
+import play.api.mvc.Action
+import play.api.mvc.Controller
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import play.api.libs.json.Json
-import play.api.mvc.{Action, Controller}
-import api.model.{Workout, WorkoutStep}
-import api.dao.WorkoutDao
-import api.security.{Authenticator, Secured, SimpleAuthenticator}
-import com.evojam.play.elastic4s.PlayElasticFactory
-import com.evojam.play.elastic4s.configuration.ClusterSetup
-import org.joda.time.DateTime
-import api.model.Responses
-
-import scala.util.{Failure, Success}
 
 
 class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAuthenticator) extends Controller with Secured {
@@ -32,7 +32,7 @@ class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAut
         WorkoutStep("Tricep Dips", 30, 5)),
       totalTime = 30
     )
-    Ok(Json.toJson(workout))
+    Responses.buildOkayResult(Json.toJson(workout))
   }
 
   def populate() = Action.async {
@@ -44,14 +44,14 @@ class WorkoutController @Inject() (workoutResource: WorkoutDao,  auth: SimpleAut
   def search(q: String) = Action.async {
     workoutResource.searchByQueryString(q) map {
       case workouts if workouts.length > 0 =>
-        Ok(Json.toJson(workouts)).withHeaders("X-Total-Count" -> workouts.length.toString)
+        Responses.buildOkayResult(Json.toJson(workouts)).withHeaders("X-Total-Count" -> workouts.length.toString)
       case empty => NoContent
     }
   }
 
   def get(id: String) = Action.async {
     workoutResource.getById(id) map {
-      case Some(workout) => Ok(Json.toJson(workout))
+      case Some(workout) => Responses.buildOkayResult(Json.toJson(workout))
       case None => InternalServerError("Could not find workout")
     }
   }

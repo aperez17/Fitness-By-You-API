@@ -56,7 +56,10 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
     val isCookieThere = true//request.cookies.nonEmpty && request.cookies.head.secure && request.cookies.head.name == AUTH_TOKEN
     val isSessionActive = request.session.data.get(Security.username).nonEmpty
     if (isCookieThere && isSessionActive) {
-      Future.successful(Responses.buildOkayResult(Json.toJson("Authenticated")))
+      findOneByUserEmail(request.session.data(Security.username)) match {
+        case Some(u) => Future.successful(Responses.buildOkayResult(Json.toJson(u)))
+        case _ => Future.successful(Responses.buildUnauthorizedResult("Incorrect username or password"))
+      }
     } else {
       Future.successful(Responses.buildUnauthorizedResult("User is not logged in"))
     }
