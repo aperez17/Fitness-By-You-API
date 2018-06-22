@@ -39,7 +39,7 @@ class SimpleAuthenticator @Inject() (cs: ClusterSetup, elasticFactory: PlayElast
               case Some(u) => u
               case _ => return Future.successful(Responses.buildUnauthorizedResult("Incorrect username or password"))
             }
-            val resultWithCookie = Responses.buildOkayResult(Json.toJson(user)).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=authToken.get(AUTH_TOKEN).getOrElse(""), secure=true))
+            val resultWithCookie = Responses.buildOkayResult(Json.toJson(user), Some("Logged in")).withCookies(Cookie(name=AUTH_TOKEN, maxAge=Some(MAX_AGE), value=authToken.get(AUTH_TOKEN).getOrElse(""), secure=true))
             val updatedSession =  resultWithCookie.session(request) + (Security.username, loginRequest.username)
             Future.successful(resultWithCookie.withSession(updatedSession))
           } else {

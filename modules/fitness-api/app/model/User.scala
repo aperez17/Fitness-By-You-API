@@ -1,77 +1,42 @@
-package api.model
+package models
 
-import common.model.DateFieldMapping
-import common.model.DoubleFieldMapping
-import common.model.ObjectFieldMapping
-import common.model.StringFieldMapping
-import play.api.libs.json.Json
+import java.util.UUID
 
-import com.sksamuel.elastic4s.source.Indexable
+import com.mohiva.play.silhouette.api.{ Identity, LoginInfo }
 
-
+/**
+ * The user object.
+ *
+ * @param userID The unique ID of the user.
+ * @param loginInfo The linked login info.
+ * @param firstName Maybe the first name of the authenticated user.
+ * @param lastName Maybe the last name of the authenticated user.
+ * @param fullName Maybe the full name of the authenticated user.
+ * @param email Maybe the email of the authenticated provider.
+ * @param avatarURL Maybe the avatar URL of the authenticated provider.
+ * @param activated Indicates that the user has activated its registration.
+ */
 case class User(
-    userName: String,
-    emailAddress: String,
-    firstName: Option[String] = None,
-    lastName: Option[String] = None,
-    currentWeight: Option[Double] = None,
-    profilePicture: Option[String] = None,
-    lastLoginDate: Option[java.util.Date] = None) {
-}
+  userID: UUID,
+  loginInfo: LoginInfo,
+  firstName: Option[String],
+  lastName: Option[String],
+  fullName: Option[String],
+  email: Option[String],
+  avatarURL: Option[String],
+  activated: Boolean) extends Identity {
 
-object User {
-  implicit val format = Json.format[User]
-  
-  implicit object UserIndexable extends Indexable[User] {
-    override def json(t: User): String = Json.toJson(t).toString()
+  /**
+   * Tries to construct a name.
+   *
+   * @return Maybe a name.
+   */
+  def name = fullName.orElse {
+    firstName -> lastName match {
+      case (Some(f), Some(l)) => Some(f + " " + l)
+      case (Some(f), None) => Some(f)
+      case (None, Some(l)) => Some(l)
+      case _ => None
+    }
   }
-  
-  val model = 
-    ObjectFieldMapping(
-      modelName = "user",
-      modelClass = Some(classOf[User]),
-      isElasticModel = true,
-      mappings = List(
-          StringFieldMapping(modelName = "userName", isAnalyzed = true, isRequired = true),
-          StringFieldMapping(modelName = "emailAddress", isRequired = true),
-          StringFieldMapping(modelName = "firstName", isAnalyzed = true),
-          StringFieldMapping(modelName = "lastName", isAnalyzed = true),
-          StringFieldMapping(modelName = "profilePicture"),
-          DoubleFieldMapping(modelName = "currentWeight"),
-          DateFieldMapping(modelName = "lastLoginDate")
-       )
-    )
-}
-
-case class LoginRequest(
-    username: String,
-    password: String){}
-
-object LoginRequest {
-  implicit val format = Json.format[LoginRequest]
-}
-
-case class UserCreationRequest(
-    userEmail: String,
-    emailAddress: String,
-    password: String,
-    firstName: Option[String] = None,
-    lastName: Option[String] = None,
-    currentWeight: Option[Double] = None)
-    
-object UserCreationRequest {
-  implicit val format = Json.format[UserCreationRequest]
-  val model = 
-    ObjectFieldMapping(
-      modelName = "user",
-      modelClass = Some(classOf[User]),
-      mappings = List(
-          StringFieldMapping(modelName = "userName", isAnalyzed = true, isRequired = true),
-          StringFieldMapping(modelName = "emailAddress", isRequired = true),
-          StringFieldMapping(modelName = "firstName", isAnalyzed = true),
-          StringFieldMapping(modelName = "lastName", isAnalyzed = true),
-          DoubleFieldMapping(modelName = "currentWeight"),
-          DateFieldMapping(modelName = "lastLoginDate")
-       )
-    )
 }
