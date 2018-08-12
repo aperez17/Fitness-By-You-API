@@ -23,7 +23,7 @@ class ElasticObjectDao[T] (esModel: ElasticModel, indexAndType: IndexAndType)(im
     index into indexAndType source user id userEmail
   }
   
-  def indexObjectById(idField: String, obj: T) = client execute {
+  def indexObjectById(idField: String, obj: T): Future[IndexResult] = client execute {
     index into indexAndType source obj id idField
   }
   

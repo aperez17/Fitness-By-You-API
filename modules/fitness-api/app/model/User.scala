@@ -5,8 +5,8 @@ import common.model.DoubleFieldMapping
 import common.model.ObjectFieldMapping
 import common.model.StringFieldMapping
 import play.api.libs.json.Json
-
 import com.sksamuel.elastic4s.source.Indexable
+import password.PasswordManager
 
 
 case class User(
@@ -43,6 +43,7 @@ object User {
     )
 }
 
+// Move this stuff with other password stuff
 case class LoginRequest(
     username: String,
     password: String){}
@@ -52,12 +53,20 @@ object LoginRequest {
 }
 
 case class UserCreationRequest(
-    userEmail: String,
+    userName: String,
     emailAddress: String,
     password: String,
     firstName: Option[String] = None,
     lastName: Option[String] = None,
-    currentWeight: Option[Double] = None)
+    currentWeight: Option[Double] = None) {
+  def toUser: User = {
+    User(userName, emailAddress, firstName, lastName, currentWeight, None, None)
+  }
+
+  def toUserPassword: UserPassword = {
+    UserPassword(userName, PasswordManager.encryptPassword(password))
+  }
+}
     
 object UserCreationRequest {
   implicit val format = Json.format[UserCreationRequest]
