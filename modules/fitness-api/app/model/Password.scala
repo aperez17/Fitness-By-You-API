@@ -1,16 +1,18 @@
 package api.model
 
 import com.sksamuel.elastic4s.source.Indexable
-import common.model.{DateFieldMapping, DoubleFieldMapping, ObjectFieldMapping, StringFieldMapping}
+import common.model.ObjectFieldMapping
+import common.model.StringFieldMapping
 import password.PasswordManager
 import play.api.libs.json.Json
 
 case class UserPassword(
                    userId: String,
-                   private val encryptedPassword: String
+                   saltValue: String,
+                   encryptedPassword: String
                    ) {
   def doesPasswordMatch(enteredPassword: String): Boolean = {
-    PasswordManager.validateEncryptedPasswordWithUserEnteredPassword(enteredPassword, encryptedPassword)
+    PasswordManager.isPasswordValid(enteredPassword, encryptedPassword, saltValue)
   }
 }
 
@@ -37,6 +39,7 @@ object UserPassword {
       isElasticModel = true,
       mappings = List(
         StringFieldMapping(modelName = "userName", isAnalyzed = true, isRequired = true),
+        StringFieldMapping(modelName = "saltValue", isRequired = true),
         StringFieldMapping(modelName = "encryptedPassword", isRequired = true)
       )
     )

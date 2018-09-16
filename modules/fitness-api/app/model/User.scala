@@ -1,12 +1,11 @@
 package api.model
 
+import com.sksamuel.elastic4s.source.Indexable
 import common.model.DateFieldMapping
 import common.model.DoubleFieldMapping
 import common.model.ObjectFieldMapping
 import common.model.StringFieldMapping
 import play.api.libs.json.Json
-import com.sksamuel.elastic4s.source.Indexable
-import password.PasswordManager
 
 
 case class User(
@@ -61,10 +60,6 @@ case class UserCreationRequest(
     currentWeight: Option[Double] = None) {
   def toUser: User = {
     User(userName, emailAddress, firstName, lastName, currentWeight, None, None)
-  }
-
-  def toUserPassword: UserPassword = {
-    UserPassword(userName, PasswordManager.encryptPassword(password))
   }
 }
     

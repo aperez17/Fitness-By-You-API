@@ -1,52 +1,50 @@
 package password
 
-import java.io.{BufferedReader, File, FileReader}
-import java.nio.file.{Files, Path, Paths}
-import java.security.KeyFactory
-import java.security.spec.{KeySpec, PKCS8EncodedKeySpec}
-import javax.crypto.Cipher
+import java.security.MessageDigest
+import javax.xml.bind.DatatypeConverter
 
-import resources.ResourceManager
+import scala.util.Random
 
-import scala.collection.mutable.ArrayBuffer
 
-/**
-  * Created by alexx on 8/12/2018.
-  */
+class PasswordGeneratedResponse(final val encryptedPassword: String, final val salt: String)
+
 object PasswordManager {
-  lazy private val secretKeyLoc = {
-    ResourceManager.runWithFile(getClass, "password/secretKeyLocation.txt", reader => {
-      reader.readLine().trim
-    })
-  }
-  lazy private val privateKeyLoc = secretKeyLoc + "/privateKey"
-  lazy private val publicKeyLoc = secretKeyLoc + "/publicKey"
+  final val SaltLength = 16
 
-  private def getKeySpec(keyLoc: String): KeySpec = {
-    val privateKeyFile = new File(keyLoc)
-    val path = Paths.get(privateKeyFile.toURI)
-    val bytes = Files.readAllBytes(path)
-    new PKCS8EncodedKeySpec(bytes)
+  private def generateSalt(): Array[Byte] = {
+    val bytes = Array.ofDim[Byte](SaltLength)
+    Random.nextBytes(bytes)
+    bytes
   }
 
-  def encryptPassword(password: String): String = {
-    val keySpec = getKeySpec(privateKeyLoc)
-    val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec)
-    val encriptor: Cipher = Cipher.getInstance("RSA")
-    encriptor.init(Cipher.ENCRYPT_MODE, privateKey)
-    encriptor.doFinal(password.getBytes).toString
+  private def getStringFromEncryptedBytes(encryptedBytes: Array[Byte]): String = {
+//    val sb = new StringBuilder
+//    encryptedBytes.foreach(byte => {
+//      sb.append(Integer.toString((byte & 0xff) + 0x100, 16).substring(1))
+//    })
+//    sb.toString
+    DatatypeConverter.printHexBinary(encryptedBytes)
   }
 
-  // Do not expose the decrypted passwords leave it private
-  private def decryptPassword(password: String): String = {
-    val keySpec = getKeySpec(publicKeyLoc)
-    val publicKey = KeyFactory.getInstance("RSA").generatePublic(keySpec)
-    val decryptor: Cipher = Cipher.getInstance("RSA")
-    decryptor.init(Cipher.DECRYPT_MODE, publicKey)
-    decryptor.doFinal(password.getBytes).toString
+  private def getEncryptedBytesFromHexString(hexString: String): Array[Byte] = {
+    DatatypeConverter.parseHexBinary(hexString)
   }
 
-  def validateEncryptedPasswordWithUserEnteredPassword(enteredPassword: String, encryptedPassword: String): Boolean = {
-    decryptPassword(encryptedPassword) == enteredPassword
+  // Private because we don't want people encrypting with custom salt values
+  private def encryptPasswordWithSalt(password: String, salt: Array[Byte]): Array[Byte] = {
+    val md = MessageDigest.getInstance("SHA-256")
+    md.update(salt)
+    val encryptedPassword = md.digest(password.getBytes())
+    encryptedPassword
+  }
+
+  def encryptPassword(password: String): PasswordGeneratedResponse = {
+    val salt: Array[Byte] = generateSalt()
+    val encryptedPassword: Array[Byte] = encryptPasswordWithSalt(password, salt)
+    new PasswordGeneratedResponse(getStringFromEncryptedBytes(encryptedPassword), getStringFromEncryptedBytes(salt))
+  }
+
+  def isPasswordValid(enteredPassword: String, encryptedPassword: String, salt: String): Boolean = {
+    getStringFromEncryptedBytes(encryptPasswordWithSalt(enteredPassword, getEncryptedBytesFromHexString(salt))) == encryptedPassword
   }
 }

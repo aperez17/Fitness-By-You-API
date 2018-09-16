@@ -1,17 +1,18 @@
 package api.security
 
-import javax.inject.Inject
-import play.api.mvc.{ AnyContent, Request }
-import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.concurrent.duration._
-import ExecutionContext.Implicits.global
-
 import api.model.User
-import play.api.mvc.{Result}
-import play.api.libs.json.Json
+import play.api.mvc.Result
+import play.api.mvc.AnyContent
+import play.api.mvc.Request
+
+import scala.concurrent.Future
 
 trait Authenticator {
-  
+
+  def resetPassword(userId: String, enteredPassword: String, newPassword: String): Future[Result]
+
+  def createPasswordEntryForUser(userId: String, enteredPassword: String): Future[Result]
+
   def authenticate(request: Request[AnyContent]): Future[Result]
   
   def findOneByUserEmail(userEmail: String): Future[User]

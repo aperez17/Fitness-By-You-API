@@ -8,7 +8,7 @@ import com.evojam.play.elastic4s.PlayElasticFactory
 import com.evojam.play.elastic4s.configuration.ClusterSetup
 import com.sksamuel.elastic4s.ElasticDsl
 import dao.UserPasswordDao
-import password.PasswordManager
+import debug.VerificationUtil
 import play.api.libs.json.Json
 import play.api.mvc.AnyContent
 import play.api.mvc.Cookie
@@ -17,42 +17,34 @@ import play.api.mvc.Request
 import play.api.mvc.Result
 import play.api.mvc.Security
 import play.api.mvc.Session
+import security.HashAuthenticator
 
-import scala.concurrent.Future
-import scala.concurrent.duration.DurationInt
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-class SimpleAuthenticator @Inject() (userPasswordDao: UserPasswordDao, cs: ClusterSetup, elasticFactory: PlayElasticFactory) extends Authenticator with ElasticDsl {
+class SimpleAuthenticator @Inject() (val userPasswordDao: UserPasswordDao, cs: ClusterSetup, elasticFactory: PlayElasticFactory) extends HashAuthenticator with ElasticDsl {
 
   private lazy val client = elasticFactory(cs)
   final val AUTH_TOKEN_HEADER = "X-AUTH-TOKEN"
   final val AUTH_TOKEN = "authToken"
   final val MAX_AGE = 18000
 
-  def validatePassword(password: String) = {
-    if (password.length < 6) {
-      throw new RuntimeException("Password must be atleast 6 characters long")
-    }
+  def validatePasswordLength(password: String): Unit = {
+    VerificationUtil.verify(password.length < 6, "Password must be at least 6 characters long")
+  }
+
+
+  override def createPasswordEntryForUser(userId: String, newPassword: String): Future[Result] = {
+    validatePasswordLength(newPassword)
+    super.createPasswordEntryForUser(userId, newPassword)
   }
 
   def resetPassword(request: Request[AnyContent]): Future[Result] = {
     request.body.asJson.map { json =>
       json.asOpt[PasswordResetRequest] match {
         case Some(resetPasswordRequest) => {
-          validatePassword(resetPasswordRequest.newPassword)
-          userPasswordDao.getById(resetPasswordRequest.username).flatMap({
-            case Some(currentUserPassword) if currentUserPassword.doesPasswordMatch(resetPasswordRequest.oldPassword) => {
-              val updatedUserPassword = UserPassword(currentUserPassword.userId, PasswordManager.encryptPassword(resetPasswordRequest.newPassword))
-              userPasswordDao.indexObjectById(updatedUserPassword.userId, updatedUserPassword).map(indexResult => {
-                if (indexResult.getId == updatedUserPassword.userId) {
-                  Responses.buildOkayResult(Json.toJson("Password was successfully reset"))
-                } else {
-                  Responses.buildInternalServerErrorResult("Could not save new password")
-                }
-              })
-            }
-            case _ => Future.successful(Responses.buildUnauthorizedResult("Could not authenticate old password with username"))
-          })
+          validatePasswordLength(resetPasswordRequest.newPassword)
+          resetPassword(resetPasswordRequest.username, resetPasswordRequest.oldPassword, resetPasswordRequest.newPassword)
         }
         case _ => Future.successful(Responses.buildBadRequest("Could not serialize pasword request"))
       }

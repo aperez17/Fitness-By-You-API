@@ -12,6 +12,7 @@ resolvers  += "Online Play Repository" at
 
 lazy val common = (project in file("modules/common"))
   .settings(Common.settings: _*)
+  .settings(libraryDependencies += Dependencies.scalaTest)
 
 lazy val fitnessApi = (project in file("modules/fitness-api"))
 	.settings(Common.settings: _*)

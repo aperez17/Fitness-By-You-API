@@ -11,9 +11,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.concurrent.Future
 
-/**
-  * Created by alexx on 8/12/2018.
-  */
 class UserPasswordController @Inject() (passwordResource: UserPasswordDao, userResource: UserDao, auth: SimpleAuthenticator) extends Controller with Secured {
   override val authService: Authenticator = auth
 
@@ -26,12 +23,10 @@ class UserPasswordController @Inject() (passwordResource: UserPasswordDao, userR
       case Some(creationRequestAsJson) if creationRequestAsJson.asOpt[UserCreationRequest].nonEmpty => {
         val creationRequest = creationRequestAsJson.as[UserCreationRequest]
         val userModel = creationRequest.toUser
-        auth.validatePassword(creationRequest.password)
-        val userPasswordModel = creationRequest.toUserPassword
         userResource.indexObjectById(userModel.userName, userModel).flatMap(result => {
           if (result.created) {
-            passwordResource.indexObjectById(userModel.userName, userPasswordModel).flatMap(result => {
-              auth.buildAuthenticationSuccessResult(request, LoginRequest(userPasswordModel.userId, ""))
+            auth.createPasswordEntryForUser(userModel.userName, creationRequest.password).flatMap(result => {
+              auth.buildAuthenticationSuccessResult(request, LoginRequest(userModel.userName, ""))
             })
           } else {
             Future.successful(Responses.buildInternalServerErrorResult("Could not create user"))
